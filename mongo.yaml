@@ -34,3 +34,17 @@ spec:
             secretKeyRef: 
               name: mongodb-secret # reference to the mongo-secret.yaml
               key: mongo-root-password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+spec:
+  # connect to a pod through label
+  selector:
+    app: mongodb
+  ports:
+    - protocol: TCP
+      port: 27017
+      # this should be the same as the pod it serves
+      targetPort: 27017
