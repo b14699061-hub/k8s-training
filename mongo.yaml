@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-deployment
+  labels:
+    app: mongodb
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+      - name: mongodb
+        # this is the image (pulls the latest version):
+        #   for more information such as the external port - see the image spec in the docker hub
+        image: mongo 
+        ports:
+        - containerPort: 27017
+        env:
+        # we will store our username and password as secrets
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            secretKeyRef: 
+              name: mongodb-secret # reference to the mongo-secret.yaml
+              key: mongo-root-username
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef: 
+              name: mongodb-secret # reference to the mongo-secret.yaml
+              key: mongo-root-password

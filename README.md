@@ -19,8 +19,18 @@ rm minikube-linux-amd64
 
 ### Start the Cluster
 
+On Ubuntu 24.04, you can quickly install Docker and use it as the driver:
+
 ```bash
-minikube start
+sudo apt update
+sudo apt install -y docker.io
+sudo usermod -aG docker $USER
+newgrp docker
+````
+
+
+```bash
+minikube start --driver=docker
 ```
 
 ### Interact with the Cluster
@@ -63,6 +73,8 @@ kubectl port-forward service/hello-minikube 7080:8080
 ```
 
 Now the app should be available at [http://localhost:7080](http://localhost:7080).
+
+
 
 
 
